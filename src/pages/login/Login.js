@@ -14,11 +14,25 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { login } from "../../components/apis/Apis";
+import CommonAlert from "../../components/modals/Alert";
 
 const defaultTheme = createTheme();
 
 export default function SignInSide(props) {
   const navigate = useNavigate();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("info");
+
+  const handleShowAlert = (message, severity = "info") => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -40,6 +54,7 @@ export default function SignInSide(props) {
       if (!err) {
         localStorage.setItem("AuthUser", JSON.stringify(logginUser.user));
         navigate("/");
+        await handleShowAlert("User Logged In", "success");
         window.location.reload();
       }
     } catch (error) {
@@ -48,99 +63,115 @@ export default function SignInSide(props) {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            position: "relative",
-            backgroundImage: "url(/coffee.gif)",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "100% 100%",
-            opacity: "80%",
-            backgroundPosition: "left",
-            backgroundRepeat: "no-repeat",
-          }}
-        ></Grid>
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+    <>
+      <CommonAlert
+        open={alertOpen}
+        onClose={handleCloseAlert}
+        severity={alertSeverity}
+        message={alertMessage}
+      />
+      <ThemeProvider theme={defaultTheme}>
+        <Grid container component="main" sx={{ height: "100vh" }}>
+          <CssBaseline />
+          <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
             sx={{
-              my: 8,
-              mt: 14,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              position: "relative",
+              backgroundImage: "url(/coffee.gif)",
+              backgroundColor: (t) =>
+                t.palette.mode === "light"
+                  ? t.palette.grey[50]
+                  : t.palette.grey[900],
+              backgroundSize: "100% 100%",
+              opacity: "80%",
+              backgroundPosition: "left",
+              backgroundRepeat: "no-repeat",
             }}
+          ></Grid>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Login to WorkSpace
-            </Typography>
             <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              sx={{
+                my: 8,
+                mt: 14,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                // autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="remember"
-                    color="primary"
-                    checked={isChecked}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Login to WorkSpace
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
               >
-                Login
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link to="/forgotpassword">Forgot password?</Link>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  // autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      value="remember"
+                      color="primary"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                  }
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Login
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link to="/forgotpassword">Forgot password?</Link>
+                  </Grid>
+                  <Grid item>
+                    <Link to="/">{"Don't have an account? Sign Up"}</Link>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Link to="/">{"Don't have an account? Sign Up"}</Link>
-                </Grid>
-              </Grid>
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }

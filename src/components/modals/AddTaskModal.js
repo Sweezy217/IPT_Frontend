@@ -70,6 +70,7 @@ const AddTaskForm = (props) => {
           props.addTask(task);
           handleShowAlert("Created task Successfully", "success");
           props.setOpen(false);
+          window.location.reload()
         }
       } catch (error) {
         console.error("Unexpected error:", error);

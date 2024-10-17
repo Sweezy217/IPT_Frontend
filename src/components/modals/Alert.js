@@ -5,7 +5,15 @@ import { Alert, Snackbar } from "@mui/material";
 const CommonAlert = ({ open, onClose, severity = "info", message }) => {
   return (
     <Snackbar
-     
+      sx={{
+        position: "absolute",
+        top: "0",
+        height: "10vh",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
       open={open}
       autoHideDuration={6000}
       onClose={onClose}
@@ -13,7 +21,7 @@ const CommonAlert = ({ open, onClose, severity = "info", message }) => {
       <Alert
         onClose={onClose}
         severity={severity}
-        sx={{ width: "100%" }} // Full width
+        sx={{ width: "250px", boxShadow: "2px 4px 6px grey" , marginTop: "15px"}}
       >
         {message}
       </Alert>

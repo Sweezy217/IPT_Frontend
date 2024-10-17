@@ -1,11 +1,30 @@
 import React, { useState } from "react";
 import { Box, Modal, Button, Typography } from "@mui/material";
 import CommonAlert from "./Alert";
+import { deleteTask } from "../apis/Apis";
 
 const DeleteTasksModal = (props) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("info");
+  const taskMap = {
+    "to do": {
+      tasks: props.toDoTasks,
+      setter: props.setToDoTasks,
+    },
+    Done: {
+      tasks: props.doneTasks,
+      setter: props.setDoneTasks,
+    },
+    "In Review": {
+      tasks: props.inReviewTasks,
+      setter: props.setInReviewTasks,
+    },
+    "In Progress": {
+      tasks: props.inProgressTasks,
+      setter: props.setInProgressTasks,
+    },
+  };
 
   const handleShowAlert = (message, severity = "info") => {
     setAlertMessage(message);
@@ -18,15 +37,28 @@ const DeleteTasksModal = (props) => {
   };
 
   const handleClose = () => {
-    props.toDoTask({});
+    props.setSelectedTask({});
     props.setOpen(false);
   };
+  console.log("toDoTaskwee", props.selectedTask);
 
-  const handleDelete = () => {
-    props.setToDoTasks(
-      props.toDoTasks.filter((item) => item.id !== props.toDoTask.id)
+  const handleDelete = async () => {
+    let updatedlist = taskMap[props.selectedTask.status]?.tasks.filter(
+      (item) => item._id !== props.selectedTask._id
     );
-    handleShowAlert("Task deleted successfully.", "success");
+
+    console.log("toDoTaskwee", props.selectedTask);
+    const [, err] = await deleteTask({
+      id: props.selectedTask._id,
+      workspaceName: props.selectedTask.workspaceName,
+    });
+    if (err == null) {
+      taskMap[props.selectedTask.status]?.setter(updatedlist);
+      handleShowAlert("Task deleted successfully.", "success");
+      props.setOpen(false);
+      return;
+    }
+    handleShowAlert(`Error deleteing Task. ${err}`, "error");
     props.setOpen(false);
   };
 

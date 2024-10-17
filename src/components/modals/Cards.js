@@ -29,36 +29,28 @@ const getTaskStatus = (dueDate) => {
   return "On Time";
 };
 
-const TaskCard = ({ task, setOpen }) => {
+const TaskCard = ({ task, setOpen, setSelectedTask }) => {
   const taskStatus = getTaskStatus(task.dueDate);
 
   return (
     <Card
       sx={{
-        maxWidth: 345,
-        bgcolor: "#ffffff",
-        mb: 2,
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)", // Slightly more pronounced shadow
+        opacity: "100%",
+        background: "#fff",
+        margin: "0 10px",
+        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)", // Subtle shadow
         borderRadius: 2, // Softer corners
-        border: "1px solid #e0e0e0",
         overflow: "hidden",
+        width: "95%",
       }}
     >
-      <CardContent>
+      <CardContent sx={{ p: 2 }}>
         {/* Task Title */}
         <Typography
           variant="h6"
           sx={{ fontWeight: "600", color: "#333", mb: 1 }}
         >
           {task.title}
-        </Typography>
-
-        {/* Task Description */}
-        <Typography
-          variant="body2"
-          sx={{ color: "#555", mb: 2, fontStyle: "italic", lineHeight: 1.5 }}
-        >
-          {task.description}
         </Typography>
 
         {/* Task Assignees */}
@@ -69,8 +61,8 @@ const TaskCard = ({ task, setOpen }) => {
               alt={assignee.name}
               src={assignee.avatarUrl}
               sx={{
-                width: 36,
-                height: 36,
+                width: 28,
+                height: 28,
                 border: "2px solid #fff",
                 borderRadius: "50%",
                 bgcolor: "primary.main",
@@ -79,71 +71,29 @@ const TaskCard = ({ task, setOpen }) => {
           ))}
         </Stack>
 
-        {/* Task Priority as a Chip */}
-        <Chip
-          label={`Priority: ${task.priority}`}
-          sx={{
-            bgcolor:
-              task.priority === "High"
-                ? "#ff6f61"
-                : task.priority === "Medium"
-                ? "#ffca28"
-                : "#66bb6a",
-            color: "#fff",
-            fontWeight: "bold",
-            mb: 2,
-            textTransform: "capitalize",
-          }}
-        />
-
-        {/* Task Dates */}
+        {/* Task Dates (Styled like Trello) */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
             color: "#777",
+            fontSize: "12px",
             mb: 2,
           }}
         >
-          <Typography variant="body2">Start: {task.startDate}</Typography>
-          <Typography variant="body2">Due: {task.dueDate}</Typography>
-        </Box>
-
-        {/* Task Status Badge */}
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Badge
-            badgeContent={taskStatus}
-            color={
-              taskStatus === "Overdue"
-                ? "error"
-                : taskStatus === "Almost Due"
-                ? "warning"
-                : "success"
-            }
-            sx={{
-              ".MuiBadge-dot": {
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-              },
-            }}
-          />
+          <Typography variant="caption">Start: {task.startDate}</Typography>
+          <Typography variant="caption">Due: {task.dueDate}</Typography>
         </Box>
       </CardContent>
 
-      {/* Action Buttons */}
+      {/* Action Buttons (Simplified, similar to Trello) */}
       <Box
         sx={{
           borderTop: "1px solid #e0e0e0",
-          backgroundColor: "#f9f9f9",
+          backgroundColor: "#fafafa",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           p: 1,
         }}
       >
@@ -154,14 +104,13 @@ const TaskCard = ({ task, setOpen }) => {
               // Handle edit action
             }}
             sx={{
-              bgcolor: "info.main",
-              color: "white",
+              bgcolor: "#f4f5f7",
+              color: "#4a4a4a",
               transition: "background-color 0.3s",
-              "&:hover": { bgcolor: "info.dark" },
-              boxShadow: 2,
+              "&:hover": { bgcolor: "#d4d7db" },
             }}
           >
-            <EditIcon />
+            <EditIcon fontSize="small" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete Task">
@@ -169,16 +118,16 @@ const TaskCard = ({ task, setOpen }) => {
             aria-label="delete"
             onClick={() => {
               setOpen(true);
+              setSelectedTask(task);
             }}
             sx={{
-              bgcolor: "error.main",
-              color: "white",
+              bgcolor: "#f4f5f7",
+              color: "#4a4a4a",
               transition: "background-color 0.3s",
-              "&:hover": { bgcolor: "error.dark" },
-              boxShadow: 2,
+              "&:hover": { bgcolor: "#d4d7db" },
             }}
           >
-            <DeleteIcon />
+            <DeleteIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </Box>
@@ -188,7 +137,13 @@ const TaskCard = ({ task, setOpen }) => {
 
 // Example usage
 const Cards = (props) => {
-  return <TaskCard task={props.task} setOpen={props.setOpen} />;
+  return (
+    <TaskCard
+      task={props.task}
+      setOpen={props.setOpen}
+      setSelectedTask={props.setSelectedTask}
+    />
+  );
 };
 
 export default Cards;

@@ -270,3 +270,37 @@ export const getProjects = async (workspaceName) => {
     return [null, { error: error.message || "An unknown error occurred" }];
   }
 };
+
+export const uploadImg = async (formData) => {
+  try {
+    const response = await fetch("http://localhost:8000/upload-profile-image", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    return ["Image uploaded successfully:", result];
+  } catch (err) {
+    return ["Error uploading image:", err];
+  }
+};
+
+export const deleteTask = async (data) => {
+  try {
+    const response = await fetch("http://localhost:8000/deletetask", {
+      method: "Delete",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return [true, null];
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    return [null, error];
+  }
+};

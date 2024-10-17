@@ -50,8 +50,11 @@ const Team = (props) => {
   console.log("currentTeamMembers", currentTeamMembers);
   return (
     <>
-      <Box sx={{ p: 4, backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-        <Typography variant="h4" sx={{ mb: 3, textAlign: "center" }}>
+      <Box sx={{ p: 2 }}>
+        <Typography
+          variant="h4"
+          sx={{ mb: 3, textAlign: "center", color: "#fff" }}
+        >
           Team Members
         </Typography>
         <Grid container spacing={3}>

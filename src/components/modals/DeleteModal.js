@@ -28,7 +28,7 @@ const DeleteModal = (props) => {
       (item) => item._id !== props.teamMember._id
     );
 
-    // Await deleteTeamMember if it's an async function
+    // delete TeamMember
     const [, err] = await deleteTeamMember({
       email: props.teamMember.email,
       workspaceName: props.teamMember.workspaceName,

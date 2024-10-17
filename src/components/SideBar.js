@@ -35,9 +35,8 @@ const SideBar = (props) => {
     <>
       <Box
         sx={{
-          width: "250px",
+          width: "200px",
           backgroundColor: "blue",
-          boxShadow: "2px 4px 6px 2px #ccc",
           padding: "20px",
           color: "white",
           height: "100vh",

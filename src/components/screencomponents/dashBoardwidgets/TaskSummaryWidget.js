@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import React from "react";
+import { Card, CardContent, Typography } from "@mui/material";
 
-const TaskSummaryWidget = () => {
+const TaskSummaryWidget = (props) => {
   return (
     <Card>
       <CardContent>
@@ -9,14 +9,10 @@ const TaskSummaryWidget = () => {
           Task Summary
         </Typography>
         <Typography variant="body1">
-          Total Tasks: 54
+          Total Tasks: {props.tasks.length}
         </Typography>
-        <Typography variant="body1">
-          Completed: 45
-        </Typography>
-        <Typography variant="body1">
-          Pending: 9
-        </Typography>
+        <Typography variant="body1">Completed: {props.tasks.filter((item) => item.status === "Done").length}</Typography>
+        <Typography variant="body1">Pending: {props.tasks.filter((item) => item.status === "to do").length}</Typography>
       </CardContent>
     </Card>
   );

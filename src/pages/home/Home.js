@@ -58,13 +58,41 @@ const HomePage = () => {
           sx={{
             display: "flex",
             minHeight: "100vh",
-            backgroundColor: "#f5f5f5",
+            backgroundImage: "url(./backimg.jpg)",
           }}
         >
-          <Box sx={{ position: "fixed", top: "0", height: "100vh" }}>
+          <Box
+            sx={{ position: "fixed", top: "0", height: "100vh", zIndex: "20" }}
+          >
             <SideBar user={user} />
           </Box>
-          <Box sx={{ flex: 1, p: 3, marginLeft: "270px" }}>
+          <Box
+            sx={{
+              flex: 1,
+              p: 3,
+              marginLeft: "220px",
+              width: "100%",
+              overflow: "auto",
+              overflowX: "auto", // Enable horizontal scrolling
+              "&::-webkit-scrollbar": {
+                height: "8px", // Slim height for the horizontal scrollbar
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#C4C4C4", // Light color for the scrollbar thumb
+                borderRadius: "10px", // Rounded corners for a modern look
+                border: "2px solid transparent", // Some space between thumb and track
+                backgroundClip: "content-box", // Ensure thumb has padding inside the track
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                backgroundColor: "#A0A0A0", // Darken on hover for better visibility
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "transparent", // Make the track transparent
+              },
+              scrollbarWidth: "thin", // For Firefox
+              scrollbarColor: "#C4C4C4 transparent", // Firefox thumb and track colors
+            }}
+          >
             <Outlet />
           </Box>
         </Box>

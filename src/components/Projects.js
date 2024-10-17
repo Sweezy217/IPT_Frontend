@@ -49,8 +49,12 @@ const ProjectsPage = () => {
 
   return (
     <>
-      <Box sx={{ padding: 2, backgroundColor: "#f5f5f5", minHeight: "100vh" }}>
-        <Typography variant="h4" gutterBottom>
+      <Box sx={{ padding: 1}}>
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ color: "#fff", textAlign: "center", mb: 2 }}
+        >
           Projects
         </Typography>
 
