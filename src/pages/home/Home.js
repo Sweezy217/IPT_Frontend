@@ -11,7 +11,7 @@ import {
 import { useTeamMemberContext } from "../../components/hooks/useTeamMemberContext";
 
 const HomePage = () => {
-  const { user, setUser, setUserOrgs } = useAuthContext();
+  const { user, setUser, userOrgs, setUserOrgs } = useAuthContext();
   const { setTeamMembers } = useTeamMemberContext();
   useEffect(() => {
     const fetchData = async () => {
@@ -27,9 +27,11 @@ const HomePage = () => {
       if (!loggedIn.email) {
         console.error("User email not found. Cannot fetch workspaces.");
       }
-
+      if (userOrgs.length > 0) {
+        return;
+      }
       try {
-        const [userOrgs, userOrgsError] = await fetchUserWorkspaces(
+        const [userOrg, userOrgsError] = await fetchUserWorkspaces(
           loggedIn.email
         );
         if (userOrgsError) {
@@ -37,9 +39,9 @@ const HomePage = () => {
           return;
         }
 
-        setUserOrgs(userOrgs);
+        setUserOrgs(userOrg);
 
-        if (!userOrgs.length > 0) {
+        if (!userOrg.length > 0) {
           console.log("No workspaces found for the user.");
         }
       } catch (error) {
@@ -48,9 +50,10 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [userOrgs]);
 
-  console.log("123456789", user);
+  console.log(userOrgs, "123456789");
+
   return (
     <>
       {Object.keys(user).length ? (
@@ -64,7 +67,7 @@ const HomePage = () => {
           <Box
             sx={{ position: "fixed", top: "0", height: "100vh", zIndex: "20" }}
           >
-            <SideBar user={user} />
+            <SideBar user={user} userOrgs={userOrgs} />
           </Box>
           <Box
             sx={{

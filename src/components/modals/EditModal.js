@@ -11,6 +11,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import CommonAlert from "./Alert"; // Import the CommonAlert component
+import { editTeamMember } from "../apis/Apis";
 
 const EditModal = (props) => {
   const [name, setName] = useState(props.teamMember.firstName);
@@ -58,8 +59,8 @@ const EditModal = (props) => {
     props.setTeamMember({});
     props.setOpen(false);
   };
-
-  const handleSave = () => {
+  
+  const handleSave = async () => {
     if (name && role && lastname) {
       const updatedList = props.teamMembers.map((item) => {
         if (item._id === props.teamMember._id) {
@@ -67,13 +68,22 @@ const EditModal = (props) => {
         }
         return item;
       });
-      props.setTeamMembers(updatedList);
-      props.setCurrentTeamMembers(updatedList);
-      props.setTeamMember({});
-      props.setOpen(false);
-      setName("");
-      setRole("");
-      handleShowAlert("Team member updated successfully", "success");
+
+      const [, err] = await editTeamMember({
+        id: props.teamMember._id,
+        firstName: name,
+        lastName: lastname,
+        role: role,
+      });
+      if (!err) {
+        props.setTeamMembers(updatedList);
+        props.setCurrentTeamMembers(updatedList);
+        props.setTeamMember({});
+        props.setOpen(false);
+        setName("");
+        setRole("");
+        handleShowAlert("Team member updated successfully", "success");
+      }
     } else {
       handleShowAlert("Name and role are required.", "error");
     }

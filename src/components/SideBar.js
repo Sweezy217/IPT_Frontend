@@ -5,7 +5,11 @@ import {
   Button,
   Avatar,
   Divider,
+  FormControl,
 } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 import ImageUploaderModal from "./modals/ImgUploader";
 import { useAuthContext } from "./hooks/useAuthContext";
@@ -50,7 +54,18 @@ const SideBar = (props) => {
             cursor: workspaces.length > 1 ? "pointer" : "default",
           }}
         >
-          {workspaces?.workspaceName}
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={workspaces?.workspaceName}
+              label="Age"
+              // onChange={}
+            >
+              <MenuItem value={10}>{workspaces?.workspaceName}</MenuItem>
+            </Select>
+          </FormControl>
         </Typography>
 
         {/* Navigation items */}

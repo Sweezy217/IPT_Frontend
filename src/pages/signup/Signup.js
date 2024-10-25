@@ -97,7 +97,7 @@ export default function SignUpSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              {tabIndex === 0 ? "Sign Up" : "Sign Up to Existing Workspace"}
+              Sign Up
             </Typography>
             <Tabs
               value={tabIndex}

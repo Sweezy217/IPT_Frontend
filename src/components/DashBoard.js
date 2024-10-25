@@ -1,7 +1,7 @@
 // Dashboard.js
 import React, { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
-import { getUserTasks } from "./apis/Apis";
+import { getUserTasks, getProjects } from "./apis/Apis";
 import ProjectSummaryWidget from "../components/screencomponents/dashBoardwidgets/ProjectSummaryWidget";
 import TaskSummaryWidget from "../components/screencomponents/dashBoardwidgets/TaskSummaryWidget";
 import UpcomingDeadlinesWidget from "../components/screencomponents/dashBoardwidgets/UpcomingDeadlinesWidget";
@@ -10,12 +10,14 @@ import ActivityFeedWidget from "../components/screencomponents/dashBoardwidgets/
 import CalendarWidget from "../components/screencomponents/dashBoardwidgets/CalendarWidget";
 import { useTaskContext } from "./hooks/useTaskContext";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { useProjectContext } from "./hooks/useProjectContext";
 
 const Dashboard = () => {
   const { tasks, setTasks } = useTaskContext();
+  const { projects, setProjects } = useProjectContext();
   const { user, userOrgs } = useAuthContext();
 
-  console.log(user, "eee12ww", tasks);
+  console.log(projects, user, "eee12ww", tasks);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,12 +39,34 @@ const Dashboard = () => {
     } else {
       fetchData();
     }
+    const fetchProjects = async () => {
+      if (projects.length > 0) {
+        return setProjects(projects);
+      }
+
+      try {
+        const [proj, err] = await getProjects(userOrgs[0]?.workspaceName);
+        if (!err) {
+          console.log("proj", proj);
+          setProjects(proj);
+        } else {
+          console.error("Error fetching projects:", err);
+        }
+      } catch (error) {
+        console.error(
+          "An unexpected error occurred while fetching projects:",
+          error
+        );
+      }
+    };
+
+    fetchProjects();
   }, [tasks]);
   return (
-    <Box sx={{ p: 2, bgcolor: "#f0f0f0", flexGrow: 1 }}>
+    <Box sx={{ p: 2, flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <ProjectSummaryWidget />
+          <ProjectSummaryWidget projects={projects} />
         </Grid>
         <Grid item xs={12} md={6}>
           <TaskSummaryWidget tasks={tasks} />

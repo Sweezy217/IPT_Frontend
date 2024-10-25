@@ -210,8 +210,8 @@ const CreateProjectModal = (props) => {
               label="Status"
             >
               <MenuItem value="not-started">Not Started</MenuItem>
-              <MenuItem value="in-progress">In Progress</MenuItem>
-              <MenuItem value="completed">Completed</MenuItem>
+              <MenuItem value="In Progress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -48,7 +48,7 @@ const TaskCard = ({ task, setOpen, setSelectedTask }) => {
         {/* Task Title */}
         <Typography
           variant="h6"
-          sx={{ fontWeight: "600", color: "#333", mb: 1 }}
+          sx={{ fontWeight: "600", color: "#333", mb: 1, fontSize: "14px" }}
         >
           {task.title}
         </Typography>

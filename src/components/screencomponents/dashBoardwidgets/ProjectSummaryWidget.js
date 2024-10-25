@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 
-const ProjectSummaryWidget = () => {
+const ProjectSummaryWidget = (props) => {
   return (
     <Card>
       <CardContent>
@@ -9,13 +9,13 @@ const ProjectSummaryWidget = () => {
           Project Summary
         </Typography>
         <Typography variant="body1">
-          Total Projects: 12
+          Total Projects: {props.projects.length}
         </Typography>
         <Typography variant="body1">
-          Ongoing: 8
+          Ongoing: {props.projects.filter((item => item.status !== "In Progress")).length - 1}
         </Typography>
         <Typography variant="body1">
-          Completed: 4
+          Completed: {props.projects.filter((item => item.status == "Completed")).length}
         </Typography>
       </CardContent>
     </Card>

@@ -227,6 +227,27 @@ export const deleteTeamMember = async (data) => {
   }
 };
 
+export const editTeamMember = async (data) => {
+  try {
+    const response = await fetch("http://localhost:8000/editmember", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return [true, null];
+  } catch (error) {
+    console.error("Error editing Member:", error);
+    return [null, error];
+  }
+};
+
 export const addProject = async (data) => {
   try {
     const response = await fetch("http://localhost:8000/addProject", {
