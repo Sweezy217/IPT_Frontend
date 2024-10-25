@@ -97,7 +97,7 @@ export default function SignUpSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign
+              Sign Up
             </Typography>
             <Tabs
               value={tabIndex}
