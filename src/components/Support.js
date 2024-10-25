@@ -74,7 +74,7 @@ const Support = () => {
         </Button>
 
         {status && (
-          <Typography sx={{ mt: 2 }} variant="body2" color="error">
+          <Typography sx={{ mt: 2 }} variant="body2" color="error" setStatus={setStatus}>
             {status}
           </Typography>
         )}

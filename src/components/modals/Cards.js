@@ -5,9 +5,9 @@ import {
   Typography,
   Stack,
   Avatar,
-  Chip,
+  // Chip,
   Box,
-  Badge,
+  // Badge,
   IconButton,
   Tooltip,
 } from "@mui/material";
@@ -31,6 +31,7 @@ const getTaskStatus = (dueDate) => {
 
 const TaskCard = ({ task, setOpen, setSelectedTask }) => {
   const taskStatus = getTaskStatus(task.dueDate);
+  console.log(taskStatus)
 
   return (
     <Card

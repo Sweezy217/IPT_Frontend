@@ -6,13 +6,13 @@ import SignUpSide from "../signup/Signup";
 import { useAuthContext } from "../../components/hooks/useAuthContext";
 import {
   fetchUserWorkspaces,
-  fetchTeamMembers,
+  // fetchTeamMembers,
 } from "../../components/apis/Apis";
-import { useTeamMemberContext } from "../../components/hooks/useTeamMemberContext";
+// import { useTeamMemberContext } from "../../components/hooks/useTeamMemberContext";
 
 const HomePage = () => {
   const { user, setUser, userOrgs, setUserOrgs } = useAuthContext();
-  const { setTeamMembers } = useTeamMemberContext();
+  // const { setTeamMembers } = useTeamMemberContext();
   useEffect(() => {
     const fetchData = async () => {
       let currentUser = localStorage.getItem("AuthUser");
