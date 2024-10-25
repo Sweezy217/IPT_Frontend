@@ -24,7 +24,7 @@ const SideBar = (props) => {
   const [openUploadImg, setOpenUploadImg] = useState(false);
 
   const items = [
-    { label: "Tasks", path: "/tasks" },
+    { label: "Tas", path: "/tasks" },
     { label: "Team", path: "/team" },
     { label: "Projects", path: "/projects" },
     { label: "Schedule", path: "/schedule" },
