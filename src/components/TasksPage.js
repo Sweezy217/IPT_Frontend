@@ -39,7 +39,8 @@ const TasksPage = () => {
     console.log("Task moved to:", task);
     handleCloseModal();
   };
-  console.log("123456789op", tasks, "toDoTasks", toDoTasks);
+  console.log("userOrgs[0]?.workspaceName", userOrgs[0]?.workspaceName);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,7 +49,8 @@ const TasksPage = () => {
           workspaceName: userOrgs[0]?.workspaceName,
         });
         if (!err) {
-          setTasks(data.message);
+          setTasks(data.message)
+          return;
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -61,7 +63,7 @@ const TasksPage = () => {
     } else {
       fetchData();
     }
-  }, [tasks]);
+  }, [!tasks.length && userOrgs.length]);
   useEffect(() => {
     setToDoTasks(tasks.filter((item) => item.status === "to do"));
     setInProgressTasks(tasks.filter((item) => item.status === "In Progress"));

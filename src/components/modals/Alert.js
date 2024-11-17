@@ -21,7 +21,7 @@ const CommonAlert = ({ open, onClose, severity = "info", message }) => {
       <Alert
         onClose={onClose}
         severity={severity}
-        sx={{ width: "250px", boxShadow: "2px 4px 6px grey" , marginTop: "15px"}}
+        sx={{ width: "max-content", boxShadow: "2px 4px 6px grey" , marginTop: "15px"}}
       >
         {message}
       </Alert>

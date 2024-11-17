@@ -2,10 +2,13 @@ import React from "react";
 import { Avatar, Button, Modal, Box, Typography, Stack } from "@mui/material";
 
 const ImageUploaderModal = (props) => {
-  const handleClose = () => props.setOpen(false);
+  const handleClose = () => {
+    props.setOpen(false);
+    props.setImage("");
+  };
 
   // Function to handle image upload
-  const handleImageUpload = (e) => {
+  const handleUploadImg = (e) => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -29,10 +32,15 @@ const ImageUploaderModal = (props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          textAlign: "center",
         }}
       >
         {/* Modal Title */}
-        <Typography variant="h6" component="h2" sx={{ mb: 3, fontWeight: 'bold' }}>
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{ mb: 3, fontWeight: "bold" }}
+        >
           Upload Profile Picture
         </Typography>
 
@@ -40,34 +48,73 @@ const ImageUploaderModal = (props) => {
         <Avatar
           alt="Uploaded Image"
           src={props.image}
-          sx={{ width: 120, height: 120, mb: 3, border: "2px solid #1976d2" }}
+          sx={{
+            width: 120,
+            height: 120,
+            mb: 2,
+            border: "2px solid #1976d2",
+            boxShadow: 2,
+            transition: "transform 0.3s ease",
+            "&:hover": {
+              transform: "scale(1.1)",
+            },
+          }}
         />
 
         {/* Buttons for selecting and saving the image */}
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" component="label" sx={{ px: 3 }}>
+        <Stack direction="column" spacing={2} sx={{ width: "100%" }}>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{
+              px: 3,
+              width: "100%",
+              backgroundColor: "#1976d2",
+              "&:hover": {
+                backgroundColor: "#1565c0",
+              },
+            }}
+          >
             {props.image === "" ? "Select Image" : "Change Image"}
             <input
               type="file"
               accept="image/*"
               hidden
-              onChange={handleImageUpload}
+              onChange={handleUploadImg}
             />
           </Button>
 
-          <Button
-            variant="outlined"
-            onClick={handleClose}
-            sx={{
-              color: "#1976d2",
-              borderColor: "#1976d2",
-              "&:hover": {
-                backgroundColor: "#e3f2fd",
-              },
-            }}
-          >
-            Close
-          </Button>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              sx={{
+                width: "50%",
+                color: "#1976d2",
+                borderColor: "#1976d2",
+                "&:hover": {
+                  backgroundColor: "#e3f2fd",
+                },
+              }}
+            >
+              Save Image
+            </Button>
+
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              sx={{
+                width: "50%",
+                color: "#1976d2",
+                borderColor: "#1976d2",
+                "&:hover": {
+                  backgroundColor: "#e3f2fd",
+                },
+              }}
+            >
+              Close
+            </Button>
+          </Stack>
         </Stack>
       </Box>
     </Modal>

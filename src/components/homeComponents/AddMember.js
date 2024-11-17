@@ -41,7 +41,7 @@ const AddTeamMemberCard = (props) => {
         ></Avatar>
         <CardContent sx={{ textAlign: "center" }}>
           <Typography variant="h6" fontWeight="bold">
-          Invite TeamMember
+            Invite TeamMember
           </Typography>
           <Typography
             variant="body2"
@@ -60,6 +60,7 @@ const AddTeamMemberCard = (props) => {
           }}
         >
           <IconButton
+            id="invite"
             aria-label="add"
             onClick={() => props.setOpen(true)}
             sx={{

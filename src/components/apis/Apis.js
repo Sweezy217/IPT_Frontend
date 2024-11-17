@@ -1,6 +1,6 @@
 export const postUserWorkSpace = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/createWorkspace", {
+    const response = await fetch("http://localhost:8000/createWorkspace", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const postUserWorkSpace = async (data) => {
 
 export const inviteUser = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/invite", {
+    const response = await fetch("http://localhost:8000/invite", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const inviteUser = async (data) => {
 
 export const getUserWorkSpaces = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/workspaces", {
+    const response = await fetch("http://localhost:8000/workspaces", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const getUserWorkSpaces = async (data) => {
 
 export const fetchTeamMembers = async (org) => {
   try {
-    const response = await fetch(`http://54.92.160.107:8000/teamMembers`, {
+    const response = await fetch(`http://localhost:8000/teamMembers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export const fetchTeamMembers = async (org) => {
 export const fetchUserWorkspaces = async (email) => {
   try {
     const response = await fetch(
-      `http://54.92.160.107:8000/userWorkSpaces?email=${email}`,
+      `http://localhost:8000/userWorkSpaces?email=${email}`,
       {
         method: "GET",
         headers: {
@@ -109,7 +109,7 @@ export const fetchUserWorkspaces = async (email) => {
 
 export const createTask = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/addTask", {
+    const response = await fetch("http://localhost:8000/addTask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export const createTask = async (data) => {
 
 export const getUserTasks = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/getTasks", {
+    const response = await fetch("http://localhost:8000/getTasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +159,7 @@ export const getUserTasks = async (data) => {
 
 export const signUp = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/signup", {
+    const response = await fetch("http://localhost:8000/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -186,7 +186,7 @@ export const login = async (data) => {
   // );
   // console.log("base64Cred", base64Cred);
   try {
-    const response = await fetch("http://54.92.160.107:8000/login", {
+    const response = await fetch("http://localhost:8000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -208,7 +208,7 @@ export const login = async (data) => {
 };
 export const deleteTeamMember = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/deleteUser", {
+    const response = await fetch("http://localhost:8000/deleteUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ export const deleteTeamMember = async (data) => {
 
 export const editTeamMember = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/editmember", {
+    const response = await fetch("http://localhost:8000/editmember", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -250,7 +250,7 @@ export const editTeamMember = async (data) => {
 
 export const addProject = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/addProject", {
+    const response = await fetch("http://localhost:8000/addProject", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -272,7 +272,7 @@ export const addProject = async (data) => {
 
 export const getProjects = async (workspaceName) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/getProject", {
+    const response = await fetch("http://localhost:8000/getProject", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -292,11 +292,14 @@ export const getProjects = async (workspaceName) => {
   }
 };
 
-export const uploadImg = async (formData) => {
+export const uploadImg = async (img) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/upload-profile-image", {
+    const response = await fetch("http://localhost:8000/upload-profile-image", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: img,
     });
     const result = await response.json();
     return ["Image uploaded successfully:", result];
@@ -307,7 +310,7 @@ export const uploadImg = async (formData) => {
 
 export const deleteTask = async (data) => {
   try {
-    const response = await fetch("http://54.92.160.107:8000/deletetask", {
+    const response = await fetch("http://localhost:8000/deletetask", {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",

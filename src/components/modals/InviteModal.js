@@ -74,6 +74,7 @@ const InviteUserModal = (props) => {
         </Typography>
         <Box component="form" sx={{ mt: 2 }}>
           <TextField
+            id="invite-email"
             fullWidth
             label="Email"
             variant="outlined"
@@ -85,6 +86,7 @@ const InviteUserModal = (props) => {
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel required>Role</InputLabel>
             <Select
+              id="role-select"
               label="Role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -107,6 +109,7 @@ const InviteUserModal = (props) => {
               Cancel
             </Button>
             <Button
+              id="send-invite"
               variant="contained"
               color="primary"
               onClick={handleSendInvite}

@@ -52,8 +52,6 @@ const HomePage = () => {
     fetchData();
   }, [userOrgs]);
 
-  console.log(userOrgs, "123456789");
-
   return (
     <>
       {Object.keys(user).length ? (

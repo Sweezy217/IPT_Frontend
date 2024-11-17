@@ -13,6 +13,7 @@ import Select from "@mui/material/Select";
 import { useNavigate } from "react-router-dom";
 import ImageUploaderModal from "./modals/ImgUploader";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { uploadImg } from "./apis/Apis";
 
 const SideBar = (props) => {
   const navigate = useNavigate();
@@ -34,6 +35,20 @@ const SideBar = (props) => {
     { label: "Support", path: "/support" },
     { label: "Logout", path: "/login" },
   ];
+
+  const handleUploadImg = async (imgData) => {
+    try {
+      const [uploadImg, err] = await uploadImg(imgData);
+
+      if (!err) {
+        alert("Image uploaded successfully!");
+      } else {
+        alert("Failed to upload image.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   return (
     <>
@@ -132,6 +147,7 @@ const SideBar = (props) => {
         open={openUploadImg}
         setOpen={setOpenUploadImg}
         image={image}
+        handleUploadImg={handleUploadImg}
         setImage={setImage}
       />
     </>

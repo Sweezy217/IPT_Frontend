@@ -31,7 +31,6 @@ const getTaskStatus = (dueDate) => {
 
 const TaskCard = ({ task, setOpen, setSelectedTask }) => {
   const taskStatus = getTaskStatus(task.dueDate);
-  console.log(taskStatus)
 
   return (
     <Card

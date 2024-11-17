@@ -48,17 +48,34 @@ export default function SignInSide(props) {
       password: formData.get("password"),
       isChecked: isChecked,
     };
+    if (!formData.get("email") || !formData.get("password")) {
+      return handleShowAlert(
+        "Both email and password fields are required.",
+        "error"
+      );
+    }
+
+    const email = formData.get("email");
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return handleShowAlert(
+        "Please enter a valid email address, including a '@' and a domain (e.g., '.com') after it.",
+        "error"
+      );
+    }
 
     try {
       const [logginUser, err] = await login(data);
       if (!err) {
         localStorage.setItem("AuthUser", JSON.stringify(logginUser.user));
         navigate("/");
-        await handleShowAlert("User Logged In", "success");
+        handleShowAlert("User Logged In", "success");
         window.location.reload();
+        return;
       }
-    } catch (error) {
-      console.error("Error adding user:", error);
+      handleShowAlert(err, "error");
+    } catch (err) {
+      handleShowAlert(err, "error");
     }
   };
 

@@ -59,7 +59,7 @@ const EditModal = (props) => {
     props.setTeamMember({});
     props.setOpen(false);
   };
-  
+
   const handleSave = async () => {
     if (name && role && lastname) {
       const updatedList = props.teamMembers.map((item) => {
@@ -113,6 +113,7 @@ const EditModal = (props) => {
             <TextField
               fullWidth
               label="Name"
+              id="name"
               variant="outlined"
               required
               value={name}
@@ -122,6 +123,7 @@ const EditModal = (props) => {
             <TextField
               fullWidth
               label="Surname"
+              id="surname"
               variant="outlined"
               required
               value={lastname}
@@ -131,6 +133,7 @@ const EditModal = (props) => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <InputLabel required>Role</InputLabel>
               <Select
+                id="role"
                 label="Role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
