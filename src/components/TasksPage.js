@@ -16,6 +16,7 @@ import { getUserTasks } from "./apis/Apis";
 import { useTaskContext } from "./hooks/useTaskContext";
 import { useAuthContext } from "./hooks/useAuthContext";
 import MoveTaskModal from "./modals/MoveTaskModal";
+import CommonAlert from "./modals/Alert";
 
 const TasksPage = () => {
   const { tasks, setTasks } = useTaskContext();
@@ -28,6 +29,23 @@ const TasksPage = () => {
   const [doneTasks, setDoneTasks] = useState([]);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("info");
+
+  const handleShowAlert = (message, severity = "info") => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
+
+  const organization = localStorage.getItem("organization");
+  console.log(organization); // This will log the stored value
+
   const sections = [
     { name: "In Progress" },
     { name: "In Review" },
@@ -39,37 +57,36 @@ const TasksPage = () => {
     console.log("Task moved to:", task);
     handleCloseModal();
   };
-  console.log("userOrgs[0]?.workspaceName", userOrgs[0]?.workspaceName);
-
+  console.log("userOrgs[0]?.workspaceName", typeof organization);
   useEffect(() => {
+    "ciwertyujhgfdsa";
     const fetchData = async () => {
       try {
         const [data, err] = await getUserTasks({
           email: user.email,
-          workspaceName: userOrgs[0]?.workspaceName,
+          workspaceName: organization,
         });
         if (!err) {
-          setTasks(data.message)
+          setTasks(data.message);
           return;
         }
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        handleShowAlert("Error fetching tasks: " + error, "error");
       }
     };
 
-    // If tasks are already populated, filter them
-    if (tasks.length) {
-      setTasks(tasks);
-    } else {
+    // Fetch data only if tasks are not already populated
+    if (!tasks.length || organization) {
       fetchData();
     }
-  }, [!tasks.length && userOrgs.length]);
+  }, [tasks.length, organization]);
+
   useEffect(() => {
     setToDoTasks(tasks.filter((item) => item.status === "to do"));
     setInProgressTasks(tasks.filter((item) => item.status === "In Progress"));
     setInReviewTasks(tasks.filter((item) => item.status === "In Review"));
     setDoneTasks(tasks.filter((item) => item.status === "Done"));
-  }, [tasks]);
+  }, [tasks, organization]);
 
   console.log("taskstaskstasks", tasks);
   // Handler to add a task to the respective category
@@ -87,12 +104,12 @@ const TasksPage = () => {
         sections={sections}
         onMoveTask={handleMoveTask}
       />
-      {/* <CommonAlert
+      <CommonAlert
         open={alertOpen}
         onClose={handleCloseAlert}
         severity={alertSeverity}
         message={alertMessage}
-      /> */}
+      />
       <Box
         sx={{
           display: "flex", // Flex container for horizontal layout

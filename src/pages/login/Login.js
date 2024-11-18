@@ -55,6 +55,13 @@ export default function SignInSide(props) {
       );
     }
 
+    // if (formData.get("password").length < 7) {
+    //   return handleShowAlert(
+    //     "Password length must be at least 8 characters.",
+    //     "error"
+    //   );
+    // }
+
     const email = formData.get("email");
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

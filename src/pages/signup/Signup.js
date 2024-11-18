@@ -16,6 +16,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../../components/apis/Apis";
+import CommonAlert from "../../components/modals/Alert";
 
 const defaultTheme = createTheme();
 
@@ -24,6 +25,19 @@ export default function SignUpSide() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("info");
+
+  const handleShowAlert = (message, severity = "info") => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
@@ -47,151 +61,174 @@ export default function SignUpSide() {
     if (tabIndex === 0) {
       data.firstName = formData.get("firstName");
       data.lastName = formData.get("lastName");
+    }
+
+    const missingFields = Object.entries(data).filter(([key, value]) => !value);
+
+    if (missingFields.length > 0) {
+      return handleShowAlert(
+        `Please fill in the following fields: ${missingFields
+          .map(([key]) => key)
+          .join(", ")}`,
+        "error"
+      );
+    }
+    const email = formData.get("email");
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return handleShowAlert(
+        "Please enter a valid email address, including a '@' and a domain (e.g., '.com') after it.",
+        "error"
+      );
+    }
+
+    if (tabIndex === 0) {
       if (data.password !== formData.get("confirm-password")) {
-        return alert("Passwords do not match");
+        return handleShowAlert("Passwords do not match", "error");
       }
+      if (formData.get("password").length < 8) {
+        return handleShowAlert(
+          "Password must have a minimum length of 8 characters.",
+          "error"
+        );
+      }
+    }
+    if (formData.get("password").length < 8) {
+      return handleShowAlert(
+        "Password must have a minimum length of 8 characters.",
+        "error"
+      );
     }
 
     const [, err] = await signUp(data);
     if (!err) {
       navigate("/login");
     } else {
-      console.log(err);
-      alert(err);
+      return handleShowAlert(err, "error");
     }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(/6.jpg)",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "100% 100%",
-            opacity: "80%",
-            backgroundPosition: "left",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+    <>
+      <CommonAlert
+        open={alertOpen}
+        onClose={handleCloseAlert}
+        severity={alertSeverity}
+        message={alertMessage}
+      />
+      <ThemeProvider theme={defaultTheme}>
+        <Grid container component="main" sx={{ height: "100vh" }}>
+          <CssBaseline />
+          <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
             sx={{
-              my: 8,
-              mt: 4,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              backgroundImage: "url(/6.jpg)",
+              backgroundColor: (t) =>
+                t.palette.mode === "light"
+                  ? t.palette.grey[50]
+                  : t.palette.grey[900],
+              backgroundSize: "100% 100%",
+              opacity: "80%",
+              backgroundPosition: "left",
+              backgroundRepeat: "no-repeat",
             }}
+          />
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={5}
+            component={Paper}
+            elevation={6}
+            square
           >
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Tabs
-              value={tabIndex}
-              onChange={handleTabChange}
-              variant="fullWidth"
-              sx={{ mt: 2, width: "80%" }}
-            >
-              <Tab label="First Time User" />
-              <Tab label="Existing User" />
-            </Tabs>
-
             <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 3 }}
+              sx={{
+                my: 8,
+                mt: 4,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              {tabIndex === 0 && (
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="firstName"
-                      label="First Name"
-                      name="firstName"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
-                      margin="normal"
-                      fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                    />
-                  </Grid>
-                </Grid>
-              )}
-              <TextField
-                required
-                margin="normal"
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-              />
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={tabIndex === 0 && 6}>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
+              <Avatar sx={{ bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign Up
+              </Typography>
+              <Tabs
+                value={tabIndex}
+                onChange={handleTabChange}
+                variant="fullWidth"
+                sx={{ mt: 2, width: "80%" }}
+              >
+                <Tab label="First Time User" />
+                <Tab label="Existing User" />
+              </Tabs>
+
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 3 }}
+              >
                 {tabIndex === 0 && (
-                  <Grid item xs={12} sm={6}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        name="firstName"
+                        autoFocus
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        margin="normal"
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+                <TextField
+                  required
+                  margin="normal"
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                />
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={tabIndex === 0 && 6}>
                     <TextField
                       margin="normal"
                       required
                       fullWidth
-                      name="confirm-password"
-                      label="Confirm Password"
-                      type={showConfirmPassword ? "text" : "password"}
+                      name="password"
+                      label="Password"
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton
                               aria-label="toggle password visibility"
-                              onClick={handleClickShowConfirmPassword}
+                              onClick={handleClickShowPassword}
                               edge="end"
                             >
-                              {showConfirmPassword ? (
+                              {showPassword ? (
                                 <Visibility />
                               ) : (
                                 <VisibilityOff />
@@ -202,42 +239,72 @@ export default function SignUpSide() {
                       }}
                     />
                   </Grid>
-                )}
-              </Grid>
-
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="workspaceName"
-                label="Workspace Name"
-                type="text"
-              />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                {tabIndex === 0 ? "Sign Up" : "Sign Up to Workspace"}
-              </Button>
-
-              <Grid container>
-                <Grid item sx={{ marginRight: "80px" }}>
-                  <Link to="/login">{"Have an account? Login"}</Link>
+                  {tabIndex === 0 && (
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="confirm-password"
+                        label="Confirm Password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        id="password"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowConfirmPassword}
+                                edge="end"
+                              >
+                                {showConfirmPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                  )}
                 </Grid>
 
-                <Grid item xs>
-                  <Link to="/CreateWorkspaceSignUp">
-                    {"Create New WorkSpace"}
-                  </Link>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="workspaceName"
+                  label="Workspace Name"
+                  type="text"
+                />
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  {tabIndex === 0 ? "Sign Up" : "Sign Up to Workspace"}
+                </Button>
+
+                <Grid container>
+                  <Grid item sx={{ marginRight: "80px" }}>
+                    <Link to="/login">{"Have an account? Login"}</Link>
+                  </Grid>
+
+                  <Grid item xs>
+                    <Link to="/CreateWorkspaceSignUp">
+                      {"Create New WorkSpace"}
+                    </Link>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }

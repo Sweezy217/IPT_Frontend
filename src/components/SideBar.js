@@ -14,12 +14,17 @@ import { useNavigate } from "react-router-dom";
 import ImageUploaderModal from "./modals/ImgUploader";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { uploadImg } from "./apis/Apis";
+import { useTaskContext } from "./hooks/useTaskContext";
+import { useTeamMemberContext } from "./hooks/useTeamMemberContext";
 
 const SideBar = (props) => {
   const navigate = useNavigate();
   const { userOrgs } = useAuthContext();
+  const { tasks, setTasks } = useTaskContext();
   const user = props.user;
   const workspaces = userOrgs[0] || [];
+  const [selectedValue, setSelectedValue] = useState("");
+  const { teamMembers, setTeamMembers } = useTeamMemberContext();
   const userIntials = user.firstName[0] + user.lastName[0];
   const [image, setImage] = useState("");
   const [openUploadImg, setOpenUploadImg] = useState(false);
@@ -49,6 +54,14 @@ const SideBar = (props) => {
       console.error("Error uploading image:", error);
     }
   };
+  const names = [];
+
+  userOrgs.map((item) => {
+    names.push(item.workspaceName);
+  });
+  console.log(names, "workspaces123", userOrgs);
+  const organization = localStorage.getItem("organization");
+  console.log(organization);
 
   return (
     <>
@@ -70,15 +83,27 @@ const SideBar = (props) => {
           }}
         >
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              {organization || "Select Workspace"}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={workspaces?.workspaceName}
-              label="Age"
-              // onChange={}
+              value={selectedValue} // Bind to state
+              label={organization || "Select Workspace"}
+              onChange={(e) => {
+                const newValue = e.target.value; // Get the new selected value
+                setSelectedValue(newValue); // Update the state
+                setTasks([]);
+                setTeamMembers([]);
+                localStorage.setItem("organization", newValue); // Store the new value in localStorage
+              }}
             >
-              <MenuItem value={10}>{workspaces?.workspaceName}</MenuItem>
+              {names.map((item, index) => (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Typography>
