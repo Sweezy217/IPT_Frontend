@@ -29,7 +29,7 @@ const getTaskStatus = (dueDate) => {
   return "On Time";
 };
 
-const TaskCard = ({ task, setOpen, setSelectedTask }) => {
+const TaskCard = ({ task, setOpen, setSelectedTask, handleOpenModal }) => {
   const taskStatus = getTaskStatus(task.dueDate);
 
   return (
@@ -44,7 +44,7 @@ const TaskCard = ({ task, setOpen, setSelectedTask }) => {
         width: "95%",
       }}
     >
-      <CardContent sx={{ p: 2 }}>
+      <CardContent sx={{ p: 2 }} onClick={() => handleOpenModal(task)}>
         {/* Task Title */}
         <Typography
           variant="h6"
@@ -142,6 +142,7 @@ const Cards = (props) => {
       task={props.task}
       setOpen={props.setOpen}
       setSelectedTask={props.setSelectedTask}
+      handleOpenModal={props.handleOpenModal}
     />
   );
 };

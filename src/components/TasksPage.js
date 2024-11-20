@@ -25,8 +25,10 @@ const TasksPage = () => {
   const [toDoTasks, setToDoTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState({});
   const [inProgressTasks, setInProgressTasks] = useState([]);
+  const [moveTask, setMoveTask] = useState({});
   const [inReviewTasks, setInReviewTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
+  const [selectedSection, setSelectedSection] = useState("");
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -51,15 +53,28 @@ const TasksPage = () => {
     { name: "In Review" },
     { name: "Done" },
   ];
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-  const handleMoveTask = (task) => {
-    console.log("Task moved to:", task);
+  const handleOpenModal = (task) => {
+    setIsModalOpen(true);
+    setMoveTask(task);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSection("");
+    setMoveTask({});
+  };
+  console.log("Task moved to:", moveTask);
+  const handleMoveTask = (section) => {
+    console.log("Task to:", section);
+    setTasks((item) => {
+      if (item._id == moveTask._id) {
+        return [...tasks, { ...item, status: section }];
+      }
+      return item;
+    });
+    handleShowAlert("Task moved to:", moveTask, "success");
     handleCloseModal();
   };
-  console.log("userOrgs[0]?.workspaceName", typeof organization);
   useEffect(() => {
-    "ciwertyujhgfdsa";
     const fetchData = async () => {
       try {
         const [data, err] = await getUserTasks({
@@ -103,6 +118,8 @@ const TasksPage = () => {
         onClose={handleCloseModal}
         sections={sections}
         onMoveTask={handleMoveTask}
+        selectedSection={selectedSection}
+        setSelectedSection={setSelectedSection}
       />
       <CommonAlert
         open={alertOpen}

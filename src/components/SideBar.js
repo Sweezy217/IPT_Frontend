@@ -94,9 +94,9 @@ const SideBar = (props) => {
               onChange={(e) => {
                 const newValue = e.target.value; // Get the new selected value
                 setSelectedValue(newValue); // Update the state
+                localStorage.setItem("organization", newValue); // Store the new value in localStorage
                 setTasks([]);
                 setTeamMembers([]);
-                localStorage.setItem("organization", newValue); // Store the new value in localStorage
               }}
             >
               {names.map((item, index) => (

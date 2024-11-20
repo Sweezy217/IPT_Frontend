@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   Box,
@@ -11,9 +11,17 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
+import { useTaskContext } from "../hooks/useTaskContext";
 
-const MoveTaskModal = ({ open, onClose, sections, onMoveTask }) => {
-  const [selectedSection, setSelectedSection] = useState("");
+const MoveTaskModal = ({
+  open,
+  onClose,
+  sections,
+  onMoveTask,
+  selectedSection,
+  setSelectedSection,
+}) => {
+  console.log("selectedSectionselectedSection", selectedSection);
 
   const handleMoveTask = () => {
     if (selectedSection) {
